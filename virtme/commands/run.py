@@ -573,7 +573,7 @@ def do_it() -> int:
         # Sigh.
         kernelargs.extend([
             'rootfstype=9p',
-            'rootflags=version=9p2000.L,trans=virtio,access=any',
+            'rootflags=version=9p2000.L,trans=virtio,msize=512000,cache=loose,access=any',
             'raid=noautodetect',
             'rw' if args.rw else 'ro',
         ])
