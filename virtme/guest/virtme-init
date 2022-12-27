@@ -193,8 +193,7 @@ if [[ -x /run/virtme/data/script ]]; then
 
     log 'starting script'
     setsid /run/virtme/data/script <>/dev/virtio-ports/virtme.scriptio 1>&0 2>&0
-    log "script returned $?"
-
+    setsid echo "script returned $?" <>/dev/virtio-ports/virtme.scriptio 1>&0 2>&0
     # Hmm.  We should expose the return value somehow.
     sync
     poweroff -f
