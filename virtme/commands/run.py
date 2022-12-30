@@ -127,6 +127,11 @@ def make_parser() -> argparse.ArgumentParser:
     g.add_argument('--rodir', action='append', default=[],
                    help="Supply a read-only directory to the guest.  Use --rodir=path or --rodir=guestpath=hostpath.")
 
+    g = parser.add_argument_group(title='Docker settings')
+    #TODO: Should be --docker
+    g.add_argument('--no-docker', action='store_true',
+                    help='Force the default configuration. Use this flag to run virtme outside a docker container')
+
     return parser
 
 _ARGPARSER = make_parser()
@@ -433,6 +438,9 @@ def do_it() -> int:
             name, fn = sanitize_disk_args('--disk', d)
             qemuargs.extend(['-drive', 'if=none,id=%s,file=%s' % (driveid, fn),
                              '-device', 'scsi-hd,drive=%s,vendor=virtme,product=disk,serial=%s' % (driveid, name)])
+
+    if not args.no_docker:
+        kernelargs.extend(['DOCKER=y'])
 
     has_script = False
 

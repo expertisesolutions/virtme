@@ -192,9 +192,14 @@ if [[ -x /run/virtme/data/script ]]; then
     fi
 
     log 'starting script'
-    setsid /run/virtme/data/script <>/dev/virtio-ports/virtme.scriptio 1>&0 2>&0
-    setsid echo "script returned $?" <>/dev/virtio-ports/virtme.scriptio 1>&0 2>&0
-    # Hmm.  We should expose the return value somehow.
+    if [ -n "$DOCKER" ]; then
+        setsid /run/virtme/data/script <>/dev/virtio-ports/virtme.scriptio
+        setsid echo "script returned $?" <>/dev/virtio-ports/virtme.scriptio
+    else
+        setsid /run/virtme/data/script <>/dev/virtio-ports/virtme.scriptio 1>&0 2>&0
+        setsid echo "script returned $?" <>/dev/virtio-ports/virtme.scriptio 1>&0 2>&0
+    fi
+
     sync
     poweroff -f
     exit 1
