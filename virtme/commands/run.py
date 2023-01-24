@@ -414,6 +414,9 @@ def do_it() -> int:
         if 'TERM' in os.environ:
             kernelargs.extend(['TERM=%s' % os.environ['TERM']])
 
+    kernelargs.extend(['PYTHONHOME=/usr/lib/python3.10/'])
+    kernelargs.extend(['PYTHONPATH=/usr/lib/python3.10/'])
+
     if args.balloon:
         qemuargs.extend(['-balloon', 'virtio'])
 
